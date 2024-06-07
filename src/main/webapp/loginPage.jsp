@@ -9,11 +9,11 @@
 </head>
 <body>
 <div class="box">
-    <form action="${pageContext.request.contextPath}/login" method="post">
+    <form action="/login" method="post">
         <h2>Login Page</h2>
         <div class="to_right">
             <label for="email_or_username">Please enter your email / username </label>
-            <input type="email" id="email_or_username" name="email_or_username">
+            <input type="text" id="email_or_username" name="email_or_username">
         </div>
 
         <div class="to_right">

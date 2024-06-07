@@ -1,8 +1,11 @@
-package com.meenigam.ccl_project_take_5;
+package com.meenigam.ccl_project_take_5.Servlets;
 
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 
 @WebServlet(name = "index", urlPatterns = "/index")
