@@ -1,16 +1,28 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: dheerajmurthy
-  Date: 07/06/24
-  Time: 1:38 pm
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8" %>
+<!DOCTYPE html>
 <html>
-  <head>
-    <title>$Title$</title>
-  </head>
-  <body>
-  $END$
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link rel="stylesheet" type="text/css" href="./style/registerPage.css">
+</head>
+<body>
+<div class="box">
+    <form action="${pageContext.request.contextPath}/login" method="post">
+        <h2>Login Page</h2>
+        <div class="to_right">
+            <label for="email_or_username">Please enter your email / username </label>
+            <input type="email" id="email_or_username" name="email_or_username">
+        </div>
+
+        <div class="to_right">
+            <label for="password">Please enter your password: </label>
+            <input type="password" id="password" name="password">
+        </div>
+
+        <button type="submit">Login</button>
+    </form>
+</div>
+</body>
 </html>
