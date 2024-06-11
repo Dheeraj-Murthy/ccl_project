@@ -10,7 +10,7 @@
 <body>
 <div class="box">
     <h1>Register Page</h1>
-
+    <p style="align-self: center; text-align: center; color: red">${error}</p>
     <form action="${pageContext.request.contextPath}/register" method="post">
         <div class="to_right">
             <label for="email">Please enter your email: </label>
@@ -22,7 +22,7 @@
             <label for="username">Please enter your username: </label>
             <input type="text" id="username" name="username">
         </div>
-        <hr style="border-style: none; opacity: 0%">
+        <hr style="border-style: none; opacity: 0">
         <div>
             <label for="employee_id">Please enter your employee id: </label>
             <input type="text" id="employee_id" name="employee_id">
@@ -31,6 +31,7 @@
         <div class="to_right">
             <label for="user_type">Please enter your user_type: </label>
             <select id="user_type" name="user_type" class="select">
+                <option value="observation_desk">Observation Desk</option>
                 <option value="pharmacist">Pharmacist</option>
                 <option value="accountant">Accountant</option>
                 <option value="CMO">CMO</option>
@@ -38,7 +39,7 @@
                 <option value="data_entry_operator">data_entry_operator</option>
             </select>
         </div>
-        <hr style="border-style: none; opacity: 0%">
+        <hr style="border-style: none; opacity: 0">
         <div class="to_right">
             <label for="password">Please enter your password: </label>
             <input type="password" id="password" name="password">

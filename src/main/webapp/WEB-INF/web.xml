@@ -12,6 +12,20 @@
         <error-code>404</error-code>
         <location>/error_pages/404.jsp</location>
     </error-page>
+
+    <context-param>
+        <param-name>userid</param-name>
+        <param-value></param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>usertype</param-name>
+        <param-value></param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>com.meenigam.ccl_project_take_5.listener.contextListener</listener-class>
+    </listener>
 </web-app>
 
 

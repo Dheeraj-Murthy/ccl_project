@@ -1,0 +1,38 @@
+table {
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 0.8vw`;
+}
+
+tr, td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 5px;
+    white-space: nowrap;
+}
+
+th {
+    cursor: pointer;
+}
+
+body {
+    flex-direction: column;
+}
+
+.to_right {
+    display: flex;
+    flex-direction: row;
+    height: 2rem;
+}
+
+.to_right button {
+    height: 2rem;
+}
+
+.item {
+    cursor: pointer;
+}
+
+.item:hover {
+    background-color: #f1f1f1;
+}
