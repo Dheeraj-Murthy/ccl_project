@@ -29,7 +29,7 @@ public class newApplicationServlet extends HttpServlet {
 
         try {
             DBManagement.create_application(employee_name, employee_id, patient_name, relation, patient_uhid, disease_type, treatment_type, phone_number);
-            response.sendRedirect("/listPage.jsp");
+            response.sendRedirect("/listPage");
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);

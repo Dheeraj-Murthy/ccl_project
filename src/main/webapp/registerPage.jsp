@@ -31,6 +31,7 @@
         <div class="to_right">
             <label for="user_type">Please enter your user_type: </label>
             <select id="user_type" name="user_type" class="select">
+                <option value="reception">Reception</option>
                 <option value="observation_desk">Observation Desk</option>
                 <option value="pharmacist">Pharmacist</option>
                 <option value="accountant">Accountant</option>
@@ -51,7 +52,18 @@
         </div>
         <hr style="border-style: none; opacity: 0%">
 
-        <button type="submit">Create Account</button>
+<%--        <button type="submit">Create Account</button>--%>
+
+        <div style="flex-direction: row;">
+            <button type="submit" style="width: 60%; height: 2rem;">Create Account</button>
+            <button type="button" style="width: 60%; height: 2rem;" onclick="register()">Login</button>
+        </div>
+        <script>
+            function register() {
+                window.location.href = "loginPage.jsp";
+            }
+        </script>
+
     </form>
 </div>
 </body>

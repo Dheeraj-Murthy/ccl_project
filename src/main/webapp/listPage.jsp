@@ -56,26 +56,18 @@
         else if (user_type.equals("Data_entry_operator")) { %>
     <%--    <button>approve selected</button>--%>
     <%--    <button>reject selected</button>--%>
-    <% } else if (user_type.equals("observation_desk")) { %>
+    <% } else if (user_type.equals("reception")) {%>
     <button type="button" onclick="create_application()">add application</button>
+    <% } %>
     <script type="text/javascript">
         function create_application() {
             window.location.href = "create_application.jsp";
         }
+        function logout() {
+            window.location.href = "loginPage.jsp";
+        }
     </script>
-    <% } else if (user_type.equals("pharmacist")) { %>
-    <%--    <button>approve selected</button>--%>
-    <%--    <button>reject selected</button>--%>
-    <% } else if (user_type.equals("accountant")) { %>
-    <%--    <button>approve selected</button>--%>
-    <%--    <button>reject selected</button>--%>
-    <% } else if (user_type.equals("CMO")) { %>
-    <%--    <button>approve selected</button>--%>
-    <%--    <button>reject selected</button>--%>
-    <% } else if (user_type.equals("CMS")) { %>
-    <%--    <button>approve selected</button>--%>
-    <%--    <button>reject selected</button>--%>
-    <% } %>
+    <button type="button" onclick="logout()">logout</button>
 </div>
 </body>
 </html>

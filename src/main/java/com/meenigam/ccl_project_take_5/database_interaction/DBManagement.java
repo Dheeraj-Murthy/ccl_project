@@ -19,7 +19,7 @@ enum Treatment_type {
 }
 
 enum User_type {
-    super_user, observation_desk, pharmacist, accountant, CMO, CMS, data_entry_operator
+    super_user, reception, observation_desk, pharmacist, accountant, CMO, CMS, data_entry_operator
 }
 
 enum application_status {

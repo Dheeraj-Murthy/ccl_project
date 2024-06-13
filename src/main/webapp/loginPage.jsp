@@ -13,7 +13,7 @@
 <script>0</script>
 <div class="box">
     <form action="/login" method="post">
-        <h2 style="text-align: center; padding: 20px;">Login Page</h2>
+        <h1 style="text-align: center; padding: 20px;">Login Page</h1>
         <div class="to_right">
             <label for="email_or_username">Please enter your email / username </label>
             <input type="text" id="email_or_username" name="email_or_username">
@@ -33,7 +33,15 @@
         <%--        </c:choose>--%>
         <p style="align-self: center; text-align: center; color: red">${error}</p>
 
-        <button type="submit">Login</button>
+        <div style="flex-direction: row;">
+            <button type="submit" style="width: 60%; height: 2rem;">Login</button>
+            <button type="button" style="width: 60%; height: 2rem;" onclick="register()">Register</button>
+        </div>
+        <script>
+            function register() {
+                window.location.href = "registerPage.jsp";
+            }
+        </script>
     </form>
 </div>
 </body>

@@ -20,6 +20,15 @@ public class listPageServlet extends HttpServlet {
         ResultSet rs = null;
         if (type == null) {
             throw new RuntimeException("type is null");
+        } else if (type.equals("reception")) {
+            System.out.println("reception user beign sent to reception");
+            try {
+                request.getRequestDispatcher("/receptionPage.jsp").forward(request, response);
+            } catch (ServletException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         } else if (type.equals("observation_desk")) {
             q = "REGISTERED";
         } else if (type.equals("pharmacist")) {
@@ -37,11 +46,13 @@ public class listPageServlet extends HttpServlet {
         }
         try {
             rs = DBManagement.retrieve_rows(q);
+            request.setAttribute("table", rs);
+            if (!type.equals("reception")) {
+                request.getRequestDispatcher("/listPage.jsp").forward(request, response);
+            }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        request.setAttribute("table", rs);
-        request.getRequestDispatcher("/listPage.jsp").forward(request, response);
     }
 
     @Override

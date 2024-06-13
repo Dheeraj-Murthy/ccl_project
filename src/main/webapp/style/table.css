@@ -23,10 +23,16 @@ body {
     display: flex;
     flex-direction: row;
     height: 2rem;
+    width: 6vw;
 }
 
 .to_right button {
     height: 2rem;
+    width: 100%;
+}
+
+.to_right button:hover{
+    color: white;
 }
 
 .item {

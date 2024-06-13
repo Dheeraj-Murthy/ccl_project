@@ -56,6 +56,10 @@ form button {
     justify-self: center;
 }
 
+form div button:hover {
+    color: white;
+}
+
 form div input {
     height: 1.5rem;
     width: 100%;
