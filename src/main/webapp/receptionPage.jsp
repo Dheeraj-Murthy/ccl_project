@@ -11,11 +11,11 @@
 <% String user_type = (String) application.getAttribute("usertype"); %>
 <body>
 <div class="box"
-     style="overflow: scroll; width: 90vw; font-size: 0.8rem; justify-content: start; height: fit-content; max-height: 80vh; min-height: 10vh;">
+     style="height: 20vh; width: 60vw">
     <h1>You are <%=user_type%>
     </h1>
 
-    <button type="button" onclick="create_application()">add application</button>
+    <button type="button" onclick="create_application()" style="margin: auto; padding: 10px">add application</button>
     <script type="text/javascript">
         function create_application() {
             window.location.href = "create_application.jsp";

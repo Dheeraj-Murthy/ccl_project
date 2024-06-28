@@ -25,8 +25,10 @@ public class loginServlet extends HttpServlet {
             String[] data = Objects.requireNonNull(DBManagement.retrieve_user(username, password));
             String userid = data[0];
             String usertype = data[1];
+            String name = data[2];
             getServletContext().setAttribute("userid", userid);
             getServletContext().setAttribute("usertype", usertype);
+            getServletContext().setAttribute("username", name);
             System.out.println("are we here");
 //            response.getWriter().write("Hello " + username + "!" + "You are logged in!\nYour userId is " + userid + "! \nAnd you are a " + usertype);
 //            request.getRequestDispatcher("/listPage").forward(request, response);

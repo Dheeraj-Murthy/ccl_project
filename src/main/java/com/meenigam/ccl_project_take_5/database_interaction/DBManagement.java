@@ -1,10 +1,14 @@
 package com.meenigam.ccl_project_take_5.database_interaction;
 
 
+import com.meenigam.ccl_project_take_5.utils.BillNumberGenerator;
 import com.meenigam.ccl_project_take_5.utils.EmailValidator;
+import com.meenigam.ccl_project_take_5.utils.Pair;
 
 import java.awt.*;
 import java.sql.*;
+
+import static java.lang.Class.forName;
 
 enum Relation_to_employee {
     SELF, SPOUSE, CHILD1, CHILD2
@@ -37,45 +41,42 @@ public class DBManagement {
     static String table = "table_of_application";
     static String history = "history";
 
+
     private static void add_entry_into_application_table(String employee_name, String employee_id, String patient_name,
                                                          Relation_to_employee relation_to_employee, String patient_UHID, Disease_type disease_type,
                                                          Treatment_type treatment_type,
                                                          String phone_number) throws Exception {
         try {
-
+            forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(url, userName, password);
-
             String useDB = "USE " + databaseName;
 
             try (Statement statement = connection.createStatement()) {
                 statement.executeUpdate(useDB);
             }
 
+
+            BillNumberGenerator billNumberGenerator = new BillNumberGenerator(connection);
+            String billNumber = billNumberGenerator.generateBillNumber();
+
             // String[] employeeNames = { "Dheeraj", "Aman", "Robert", "Mathew" };
             // String[] employeeIds = { "E45678", "N12345", "E09876", "N56789" };
             // String[] patientNames = { "Dheeraj", "Adashu", "Gill", "Joseph" };
             // String[] relationToEmployee = { "SELF", "CHILD1", "SPOUSE", "CHILD2" };
             String[] arr = {employee_name, employee_id, patient_name, relation_to_employee.toString(), patient_UHID,
-                    disease_type.toString(), treatment_type.toString(), phone_number};
+                    disease_type.toString(), treatment_type.toString(), phone_number, "PHARMACY", "PHARMACY", billNumber};
 
             String makeEntries = "INSERT INTO " + table
-                    + " (employee_name, employee_id, patient_name, relation_to_employee, patient_uhid, disease_type, treatment_type, phone_number, application_status) "
-                    + " VALUES ";
+                    + " (employee_name, employee_id, patient_name, relation_to_employee, cprms_id, disease_type, treatment_type, phone_number, application_status, rejected_from, bill_number) "
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 
-            String values = "(";
-            for (int j = 0; j < 8; j++) {
-                values += "'" + arr[j] + "', ";
+            PreparedStatement preparedStatement = connection.prepareStatement(makeEntries);
+            for (int i = 0; i < arr.length; i++) {
+                preparedStatement.setString(i+1, arr[i]);
             }
-            // values = values.substring(0, values.length() - 2);
-            values += "'" + application_status.PHARMACY.toString() + "'";
-            values += ')';
-            makeEntries += values;
+            System.out.println(preparedStatement);
 
-            makeEntries += ";";
-            System.out.println(makeEntries);
-
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(makeEntries);
+            preparedStatement.executeUpdate();
 
 //            JOptionPane.showMessageDialog(null, databaseName + " Database has been changed successfully",
 //                    "System Message", JOptionPane.INFORMATION_MESSAGE);
@@ -104,7 +105,7 @@ public class DBManagement {
             throws Exception {
         try {
 
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection(url, userName, password);
 
             String useDB = "USE " + databaseName;
@@ -120,21 +121,15 @@ public class DBManagement {
 
             String userTable = "user_table";
             String makeEntries = "INSERT INTO " + userTable
-                    + " (User_name, Password, User_type, employee_id, email_id) " + " VALUES ";
-
-            StringBuilder values = new StringBuilder("(");
-            for (int j = 0; j < 5; j++) {
-                values.append("'").append(arr[j]).append("', ");
+                    + " (User_name, Password, User_type, employee_id, email_id) " + " VALUES (?,?,?,?,?);";
+            PreparedStatement preparedStatement = connection.prepareStatement(makeEntries);
+            for (int i = 0; i < arr.length; i++) {
+                preparedStatement.setString(i+1, arr[i]);
             }
-            values = new StringBuilder(values.substring(0, values.length() - 2));
-            values.append(')');
-            makeEntries += values;
 
-            makeEntries += ";";
-            System.out.println(makeEntries);
+            System.out.println(preparedStatement);
 
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(makeEntries);
+            preparedStatement.executeUpdate();
 
 //            JOptionPane.showMessageDialog(null, databaseName + " Database has been changed successfully",
 //                    "System Message", JOptionPane.INFORMATION_MESSAGE);
@@ -151,12 +146,21 @@ public class DBManagement {
         Connection connection = DriverManager.getConnection(url, userName, password);
         String useDB = "USE " + databaseName;
         connection.createStatement().executeUpdate(useDB);
-        // UPDATE table_name SET column1 = value1, column2 = value2, ... where employee
-        // ID = 6
-        String command;
+
+        ResultSet rs = null;
+        Statement query = connection.createStatement();
+        String q = "SELECT rejected_from FROM table_of_application WHERE application_id = " + application_id + ";";
+        rs = query.executeQuery(q);
+        String to_send_to = null;
+        if (rs.next()) {
+            to_send_to = rs.getString(1);
+            System.out.println(to_send_to);
+        }
+
+        String command = "";
         if (is_approved) {
             command = "UPDATE " + table
-                    + " SET application_status = 'PHARMACY'  WHERE application_id = "
+                    + " SET application_status = '" + to_send_to + "' WHERE application_id = "
                     + application_id;
             connection.createStatement().executeUpdate(command);
             String command2 = "INSERT INTO " + history + "(application_id, Processed_by, Date, verdict) VALUES ('"
@@ -185,7 +189,7 @@ public class DBManagement {
         String command;
         if (is_approved) {
             command = "UPDATE " + table
-                    + " SET application_status = 'ACCOUNTS'  WHERE application_id = "
+                    + " SET application_status = 'ACCOUNTS', rejected_from = 'ACCOUNTS'  WHERE application_id = "
                     + application_id;
             connection.createStatement().executeUpdate(command);
             String command2 = "INSERT INTO " + history + "(application_id, Processed_by, Date, verdict) VALUES ('"
@@ -212,7 +216,7 @@ public class DBManagement {
         // ID = 6
         String command;
         if (is_approved) {
-            command = "UPDATE " + table + " SET application_status = 'CMO'  WHERE application_id = "
+            command = "UPDATE " + table + " SET application_status = 'CMO', rejected_from = 'CMO'  WHERE application_id = "
                     + application_id;
             connection.createStatement().executeUpdate(command);
             String command2 = "INSERT INTO " + history + "(application_id, Processed_by, Date, verdict) VALUES ('"
@@ -238,7 +242,7 @@ public class DBManagement {
         // ID = 6
         String command;
         if (is_approved) {
-            command = "UPDATE " + table + " SET application_status = 'CMS'  WHERE application_id = "
+            command = "UPDATE " + table + " SET application_status = 'CMS', rejected_from = 'CMS'  WHERE application_id = "
                     + application_id;
             connection.createStatement().executeUpdate(command);
             String command2 = "INSERT INTO " + history + "(application_id, Processed_by, Date, verdict) VALUES ('"
@@ -265,7 +269,7 @@ public class DBManagement {
         String command;
         if (is_approved) {
             command = "UPDATE " + table
-                    + " SET application_status = 'data_entry_operator'  WHERE application_id = "
+                    + " SET application_status = 'data_entry_operator', rejected_from = 'data_entry_operator'  WHERE application_id = "
                     + application_id;
             connection.createStatement().executeUpdate(command);
             String command2 = "INSERT INTO " + history + "(application_id, Processed_by, Date, verdict) VALUES ('"
@@ -348,9 +352,9 @@ public class DBManagement {
         Statement query = connection.createStatement();
         String q;
         if (isUserName) {
-            q = "SELECT User_id, Password, User_type FROM user_table WHERE email_id = '" + email_or_username + "';";
+            q = "SELECT User_id, Password, User_type, User_name FROM user_table WHERE email_id = '" + email_or_username + "';";
         } else {
-            q = "SELECT User_id, Password, User_type FROM user_table WHERE User_name = '" + email_or_username + "';";
+            q = "SELECT User_id, Password, User_type, User_name FROM user_table WHERE User_name = '" + email_or_username + "';";
         }
         rs = query.executeQuery(q);
         String UserId = null;
@@ -358,11 +362,12 @@ public class DBManagement {
             UserId = rs.getString(1);
             String pass = rs.getString(2);
             String type = rs.getString(3);
+            String Name = rs.getString(4);
             if (pass.equals(user_password)) {
                 System.out.println("User_id is " + UserId);
                 System.out.println("user_password is " + pass);
                 System.out.println("type is " + type);
-                return new String[]{UserId, type};
+                return new String[]{UserId, type, Name};
             }
         } else {
             System.out.println("User_id is null");
@@ -371,15 +376,32 @@ public class DBManagement {
         return null;
     }
 
-    public static ResultSet retrieve_rows(String usertype) throws Exception {
+    public static Pair<ResultSet, Integer> retrieve_rows(String usertype) throws Exception {
         Connection connection = DriverManager.getConnection(url, userName, password);
         String useDB = "USE " + databaseName;
 
         connection.createStatement().executeUpdate(useDB);
+        if (usertype.equals("super_user")){
+            String q = "SELECT * FROM table_of_application;";
+            ResultSet rs = connection.createStatement().executeQuery(q);
+            String query2 = "SELECT COUNT(*) FROM table_of_application;";
+            ResultSet count = connection.createStatement().executeQuery(query2);
+            Integer ans = null;
+            if (count.next()) {
+                ans = count.getInt(1);
+            }
+            return new Pair<>(rs, ans);
+        }
 
         String query = "SELECT * FROM table_of_application WHERE application_status = '" + usertype + "';";
         ResultSet rs = connection.createStatement().executeQuery(query);
-        return rs;
+        String query2 = "SELECT COUNT(*) FROM table_of_application WHERE application_status = '" + usertype + "';";
+        ResultSet count = connection.createStatement().executeQuery(query2);
+        Integer ans = null;
+        if (count.next()) {
+            ans = count.getInt(1);
+        }
+        return new Pair<>(rs, ans);
     }
 
     public static ResultSet get_row(String id) throws Exception {
@@ -429,60 +451,143 @@ public class DBManagement {
         add_entry_into_application_table(employee_name, employee_id, patient_name, r, patient_UHID, d, t, phone_number);
     }
 
-    public static void approve (String user_type, String application_id) throws Exception {
+    public static ResultSet retrieve_history(String application_id) throws Exception {
+        Connection connection = DriverManager.getConnection(url, userName, password);
+        String useDB = "USE " + databaseName;
+
+        connection.createStatement().executeUpdate(useDB);
+
+        String query = "SELECT * FROM history WHERE application_id = '" + application_id + "';";
+        ResultSet rs = connection.createStatement().executeQuery(query);
+        return rs;
+    }
+
+    public static void approve(String user_type, String application_id, String user_name) throws Exception {
         if (User_type.observation_desk.toString().equals(user_type)) {
             update_by_observation_desk(application_id, true);
         } else if (User_type.pharmacist.toString().equals(user_type)) {
             update_by_pharmacist(application_id, true);
         } else if (User_type.accountant.toString().equals(user_type)) {
-            update_by_accountant(application_id,true);
+            update_by_accountant(application_id, true);
         } else if (User_type.CMO.toString().equals(user_type)) {
-            update_by_CMO(application_id,true);
+            update_by_CMO(application_id, true);
         } else if (User_type.CMS.toString().equals(user_type)) {
-            update_by_CMS(application_id,true);
+            update_by_CMS(application_id, true);
         } else if (User_type.data_entry_operator.toString().equals(user_type)) {
-            update_by_data_entry_operator(application_id,true);
+            update_by_data_entry_operator(application_id, true);
         } else {
             throw new Exception("user_type is not valid");
         }
+        forName("com.mysql.cj.jdbc.Driver");
+        Connection connection = DriverManager.getConnection(url, userName, password);
+        String useDB = "USE " + databaseName;
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(useDB);
+        }
+
+        System.out.println(user_name + " <= this is the person who just pressed aprove");
+        String query = "UPDATE user_table SET applications_accepted = applications_accepted + 1 WHERE User_name = ?;";
+        PreparedStatement ps2 = connection.prepareStatement(query);
+        ps2.setString(1, user_name);
+        ps2.executeUpdate();
     }
 
-    public static void reject (String user_type, String application_id) throws Exception {
+    public static void reject(String user_type, String application_id, String user_name) throws Exception {
         if (User_type.observation_desk.toString().equals(user_type)) {
             update_by_observation_desk(application_id, false);
         } else if (User_type.pharmacist.toString().equals(user_type)) {
             update_by_pharmacist(application_id, false);
         } else if (User_type.accountant.toString().equals(user_type)) {
-            update_by_accountant(application_id,false);
+            update_by_accountant(application_id, false);
         } else if (User_type.CMO.toString().equals(user_type)) {
-            update_by_CMO(application_id,false);
+            update_by_CMO(application_id, false);
         } else if (User_type.CMS.toString().equals(user_type)) {
-            update_by_CMS(application_id,false);
+            update_by_CMS(application_id, false);
         } else if (User_type.data_entry_operator.toString().equals(user_type)) {
-            update_by_data_entry_operator(application_id,false);
+            update_by_data_entry_operator(application_id, false);
         } else {
             throw new Exception("user_type is not valid");
         }
+
+        forName("com.mysql.cj.jdbc.Driver");
+        Connection connection = DriverManager.getConnection(url, userName, password);
+        String useDB = "USE " + databaseName;
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(useDB);
+        }
+
+        System.out.println(user_name + " <= this is the person who just pressed reject");
+        String query = "UPDATE user_table SET applications_rejected = applications_rejected + 1 WHERE User_name = ?;";
+        PreparedStatement ps2 = connection.prepareStatement(query);
+        ps2.setString(1, user_name);
+        ps2.executeUpdate();
+    }
+
+    public static Pair<ResultSet, Integer> get_applications(String employee_name, String employee_id) throws Exception {
+
+        forName("com.mysql.cj.jdbc.Driver");
+        Connection connection = DriverManager.getConnection(url, userName, password);
+        String useDB = "USE " + databaseName;
+
+        connection.createStatement().executeUpdate(useDB);
+
+
+        String query = "SELECT * FROM table_of_application WHERE employee_id = '" + employee_id + "' AND employee_name = '" + employee_name + "';";
+        ResultSet rs = connection.createStatement().executeQuery(query);
+        String query2 = "SELECT COUNT(*) FROM table_of_application WHERE employee_id = '" + employee_id + "' AND employee_name = '" + employee_name + "';";
+        ResultSet rs2 = connection.createStatement().executeQuery(query2);
+        Integer ans = null;
+        if (rs2.next()) {
+            ans = rs2.getInt(1);
+        }
+        return new Pair<>(rs, ans);
+    }
+
+    public static Pair<Integer, Integer> get_count(String name) throws SQLException, ClassNotFoundException {
+        forName("com.mysql.cj.jdbc.Driver");
+        Connection connection = DriverManager.getConnection(url, userName, password);
+        String useDB = "USE " + databaseName;
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate(useDB);
+        }
+
+        String query = "SELECT * FROM user_table WHERE User_name = ?";
+        PreparedStatement ps2 = connection.prepareStatement(query);
+        ps2.setString(1, name);
+        ResultSet rs = ps2.executeQuery();
+        Integer ans1 = null;
+        Integer ans2 = null;
+        if (rs.next()) {
+            ans1 = Integer.parseInt(rs.getString(8)); // accepted
+            ans2 = Integer.parseInt(rs.getString(7)); // rejected
+        }
+//        return ans;
+        return new Pair<>(ans1, ans2);
     }
 
     public static void main(String[] args) {
         try {
-//            add_entry_into_application_table("Adarsh", "N000000", "Siddharth",
-//                    relation_to_employee.SPOUSE, "7777777777",
-//                    disease_type.non_critical, treatment_type.OPD, "999999999");
-            update_by_pharmacist("19", false);
-//             update_by_accountant("14", true);
-            // update_by_CMO("1", true);
-//             update_by_CMS("9", true);
-            // update_by_data_entry_operator("1", true);
-
+//            add_entry_into_application_table("Latest", "mama", "hallo",
+//                    Relation_to_employee.SPOUSE, "7777777777",
+//                    Disease_type.non_critical, Treatment_type.OPD, "999999999");
+//            update_by_observation_desk("32", true);
+//            update_by_pharmacist("32", true);
+//             update_by_accountant("32", true);
+//             update_by_CMO("32", true);
+//             update_by_CMS("32", true);
+//             update_by_data_entry_operator("1", true);
 //            add_entry_into_user_table("Dheeraj", "helloworld", User_type.super_user, "tallahasse", "dcompany2004@gmail.com");
-
+//            ResultSet rs = retrieve_history("32");
+//            while (rs.next()) {
+//                for (int i = 1; i < 5; i++)
+//                    System.out.print(rs.getString(i) + ' ');
+//                System.out.println(' ');
+//            }
+//            get_count("dheeraj");
         } catch (Exception e) {
             System.out.println("error: " + e);
         }
     }
-
 
 }
 

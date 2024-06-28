@@ -37,10 +37,10 @@ public class registerServlet extends HttpServlet {
         } else {
             try {
                 DBManagement.add_user(username, password, user_type, employeeId, email);
-                request.getRequestDispatcher("/loginPage.jsp").forward(request, response);
+                request.getRequestDispatcher("/super_userPage.jsp").forward(request, response);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                e.printStackTrace();
+//                e.printStackTrace();
                 if (Objects.equals(e.getMessage(), "java.lang.Exception: java.sql.SQLIntegrityConstraintViolationException: Duplicate entry 'dcompany2004@gmail.com' for key 'user_table.email_id'"))
                     request.setAttribute("error", "User already exists");
                 else request.setAttribute("error", e.getMessage());

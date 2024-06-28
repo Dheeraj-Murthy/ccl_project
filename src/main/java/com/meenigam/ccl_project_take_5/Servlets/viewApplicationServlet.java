@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.ResultSet;
 
+
 @WebServlet(name = "viewApplicationServlet", urlPatterns = "/view_application")
 public class viewApplicationServlet extends HttpServlet {
     @Override
@@ -17,7 +18,11 @@ public class viewApplicationServlet extends HttpServlet {
         String applicationId = request.getParameter("id");
         try {
             ResultSet rs = DBManagement.get_row(applicationId);
+            ResultSet his = DBManagement.retrieve_history(applicationId);
+            request.setAttribute("table2", his);
             request.setAttribute("table1", rs);
+            request.setAttribute("applicationId", applicationId);
+
             request.getRequestDispatcher("/view_application.jsp").forward(request, response);
         } catch (Exception e) {
             throw new RuntimeException(e);

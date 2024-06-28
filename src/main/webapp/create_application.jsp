@@ -19,7 +19,7 @@
             action="${pageContext.request.contextPath}/add_application"
             method="post"
     >
-        <h2 style="text-align: center">Create Application</h2>
+        <h2 style="text-align: center; margin-bottom: 20px">Create Application</h2>
 
         <div class="to_right">
             <label for="employee_name">Enter the name of the Employee:</label>
@@ -55,6 +55,7 @@
             <select
                     name="relation"
                     id="relation"
+                    style="height: 1.5rem; padding: 0 10px;"
             >
                 <option value="SELF">SELF</option>
                 <option value="SPOUSE">Spouse</option>
@@ -77,6 +78,7 @@
             <select
                     name="disease_type"
                     id="disease_type"
+                    style="height: 1.5rem; padding: 0 10px;"
             >
                 <option value="critical">Critical</option>
                 <option value="non_critical">Non Critical</option>
@@ -90,6 +92,7 @@
             <select
                     name="treatment_type"
                     id="treatment_type"
+                    style="height: 1.5rem; padding: 0 10px;"
             >
                 <option value="IPD">IPD</option>
                 <option value="OPD">OPD</option>
@@ -116,7 +119,7 @@
         <%--            />--%>
         <%--        </div>--%>
 
-        <button type="submit">Add Application</button>
+        <button type="submit" style="height: 2rem">Add Application</button>
     </form>
 </div>
 </body>

@@ -14,12 +14,13 @@ public class rejectServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String id = request.getParameter("id");
         String type = (String) getServletContext().getAttribute("usertype");
+        String username = (String) getServletContext().getAttribute("username");
         System.out.println(type + "hello this message is brought to you by the approveServlet");
         if (type.equals("Data_entry_operator")) {
             type = "data_entry_operator";
         }
         try {
-            DBManagement.reject(type, id);
+            DBManagement.reject(type, id, username);
             response.sendRedirect("/listPage");
         } catch (Exception e) {
             throw new RuntimeException(e);

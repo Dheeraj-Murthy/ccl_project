@@ -55,8 +55,8 @@
 <%--        <button type="submit">Create Account</button>--%>
 
         <div style="flex-direction: row;">
+            <button type="button" style="width: 60%; height: 2rem;" onclick="window.location.href='/listPage'">go Back</button>
             <button type="submit" style="width: 60%; height: 2rem;">Create Account</button>
-            <button type="button" style="width: 60%; height: 2rem;" onclick="register()">Login</button>
         </div>
         <script>
             function register() {

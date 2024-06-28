@@ -33,9 +33,10 @@
         <%--        </c:choose>--%>
         <p style="align-self: center; text-align: center; color: red">${error}</p>
 
-        <div style="flex-direction: row;">
-            <button type="submit" style="width: 60%; height: 2rem;">Login</button>
-            <button type="button" style="width: 60%; height: 2rem;" onclick="register()">Register</button>
+        <div style="flex-direction: row; grid-template-columns: 1fr">
+<%--            <button type="button" style="width: 60%; height: 2rem;" onclick="register()">Register</button>--%>
+<%--            <button style="display: none"></button>--%>
+            <button type="submit" style="width: 30%; height: 2rem;">Login</button>
         </div>
         <script>
             function register() {

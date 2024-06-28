@@ -9,6 +9,10 @@ public class contextListener implements ServletContextListener {
     }
 
     public void contextDestroyed(ServletContextEvent sce) {
+    }
 
+    public void contextDestroy(ServletContextEvent sce) {
+        sce.getServletContext().setAttribute("userid", null);
+        sce.getServletContext().setAttribute("usertype", null);
     }
 }
