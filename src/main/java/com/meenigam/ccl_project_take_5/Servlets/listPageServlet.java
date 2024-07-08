@@ -33,9 +33,8 @@ public class listPageServlet extends HttpServlet {
             System.out.println("reception user beign sent to reception");
             try {
                 request.getRequestDispatcher("/receptionPage.jsp").forward(request, response);
-            } catch (ServletException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
+                return;
+            } catch (ServletException | IOException e) {
                 throw new RuntimeException(e);
             }
         } else if (type.equals("observation_desk")) {
@@ -96,6 +95,11 @@ public class listPageServlet extends HttpServlet {
             String type = (String) getServletContext().getAttribute("usertype");
             String username = (String) getServletContext().getAttribute("username");
             String q = request.getParameter("type");
+            request.setAttribute("type", q);
+            if (q == null) {
+                request.setAttribute("type", "all");
+            }
+            System.out.println(q+ "<= this is the status of application to be retrieved");
             ResultSet rs = null;
             Pair<ResultSet, Integer> data = DBManagement.retrieve_rows(q);
             Pair<Integer, Integer> cunt = DBManagement.get_count(username);

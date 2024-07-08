@@ -74,7 +74,7 @@
     <table id="myTable">
         <thead>
         <tr>
-            <% for (int i = 2; i <= colCount; i++) {
+            <% for (int i = 2; i < colCount; i++) {
                 String colName = rs.getMetaData().getColumnName(i);
                 switch (colName) {
                     case "application_id": colName = "application_id"; break;
@@ -93,7 +93,7 @@
                     case "cprms_id": colName = "CPRMS Id"; break;
                 }
             %>
-            <th onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(<%=i%>)')"><%= colName %> &#8597;</th>
+            <th onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(<%=i%>)')"><%= colName %> </th>
             <% } %>
         </tr>
         </thead>
@@ -101,7 +101,7 @@
         <% while (rs.next()) { %>
         <tr class="item" onclick="window.location.href='view_application?id=<%= rs.getString("application_id") %>'">
 
-            <% for (int i = 2; i <= colCount; i++) {
+            <% for (int i = 2; i < colCount; i++) {
                 String colValue = rs.getString(i);
             %>
             <td><%= colValue %>

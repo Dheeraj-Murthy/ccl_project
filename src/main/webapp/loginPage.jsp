@@ -33,10 +33,9 @@
         <%--        </c:choose>--%>
         <p style="align-self: center; text-align: center; color: red">${error}</p>
 
-        <div style="flex-direction: row; grid-template-columns: 1fr">
-<%--            <button type="button" style="width: 60%; height: 2rem;" onclick="register()">Register</button>--%>
-<%--            <button style="display: none"></button>--%>
-            <button type="submit" style="width: 30%; height: 2rem;">Login</button>
+        <div style="flex-direction: row; grid-template-columns: 1fr 1fr">
+            <button type="button" style="width: 50%; height: 2rem;" onclick="window.location.href='index.jsp'">Back</button>
+            <button type="submit" style="width: 50%; height: 2rem;">Login</button>
         </div>
         <script>
             function register() {

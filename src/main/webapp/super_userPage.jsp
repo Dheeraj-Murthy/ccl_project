@@ -59,6 +59,7 @@
                 <option value="CMS">CMS</option>
                 <option value="data_entry_operator">Data entry Operator</option>
                 <option value="APPROVED">Passed</option>
+                <option value="users">Show Users</option>
             </select>
             <button type="submit">submit</button>
         </form>
@@ -82,8 +83,12 @@
     </h1>
     <%
         ResultSet rs = (ResultSet) request.getAttribute("table");
+        String tp = (String) request.getAttribute("type");
         if (rs != null) {
             int colCount = rs.getMetaData().getColumnCount();
+            if (tp != null && tp.equals("users")) {
+                colCount++;
+            }
     %>
     <table id="myTable">
         <thead>
@@ -133,6 +138,8 @@
                         case "rejected_from":
                             colName = "Shortfell from";
                             break;
+                        default:
+                            break;
                     }
             %>
             <th onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(<%=i%>)')"><%= colName %> &#8597;</th>
@@ -140,9 +147,15 @@
         </tr>
         </thead>
         <tbody id="tbody">
-        <% while (rs.next()) { %>
-        <tr class="item" onclick="window.location.href='view_application?id=<%= rs.getString("application_id") %>'">
+        <% while (rs.next()) {
 
+//            System.out.println(tp + "<= this is the status of application retrieved in jsp");
+        %>
+        <% if (tp != null && tp.equals("users")) { %>
+        <tr class="item">
+                <% } else { %>
+        <tr class="item" onclick="window.location.href='view_application?id=<%= rs.getString("application_id") %>'">
+            <% } %>
             <%
                 for (int i = 2; i < colCount; i++) {
                     String colValue = rs.getString(i);
@@ -158,39 +171,5 @@
     <p>No data available. You have no new entries. WEll DONE ig...</p>
     <% } %>
 </div>
-
-<%--<div class="to_right">--%>
-<%--    <%--%>
-<%--        System.out.println(user_type);--%>
-<%--        if (user_type == null)--%>
-<%--            ;--%>
-<%--        else if (user_type.equals("Data_entry_operator")) { %>--%>
-<%--    &lt;%&ndash;    <button>approve selected</button>&ndash;%&gt;--%>
-<%--    &lt;%&ndash;    <button>reject selected</button>&ndash;%&gt;--%>
-<%--    <% } else if (user_type.equals("reception")) {%>--%>
-<%--    <button type="button" onclick="create_application()">add application</button>--%>
-<%--    <% } %>--%>
-<%--    &lt;%&ndash;    <button type="button" onclick="logout()">logout</button>&ndash;%&gt;--%>
-<%--</div>--%>
-
-<%--<script>--%>
-<%--    $(document).ready(function () {--%>
-<%--        $("#search").on("keyup", function () {--%>
-<%--            let entireValue = $("#search").val().toLowerCase();--%>
-
-<%--            $("#tbody tr").each(function () {--%>
-<%--                let rowText = $(this).text().toLowerCase();--%>
-<%--                // Show all rows if entire search is empty--%>
-<%--                let matchEntire = entireValue === "";--%>
-
-<%--                if (entireValue !== "") {--%>
-<%--                    matchEntire = rowText.indexOf(entireValue) > -1;--%>
-<%--                }--%>
-<%--                let matchColumn = true;--%>
-<%--                $(this).toggle(matchEntire && matchColumn);--%>
-<%--            });--%>
-<%--        });--%>
-<%--    });--%>
-<%--</script>--%>
 </body>
 </html>

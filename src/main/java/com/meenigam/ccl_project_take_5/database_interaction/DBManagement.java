@@ -391,6 +391,16 @@ public class DBManagement {
                 ans = count.getInt(1);
             }
             return new Pair<>(rs, ans);
+        } else if (usertype.equals("users")){
+            String q = "SELECT * FROM user_table;";
+            ResultSet rs = connection.createStatement().executeQuery(q);
+            String query2 = "SELECT COUNT(*) FROM user_table;";
+            ResultSet count = connection.createStatement().executeQuery(query2);
+            Integer ans = null;
+            if (count.next()) {
+                ans = count.getInt(1);
+            }
+            return new Pair<>(rs, ans);
         }
 
         String query = "SELECT * FROM table_of_application WHERE application_status = '" + usertype + "';";

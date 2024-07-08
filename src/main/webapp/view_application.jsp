@@ -28,12 +28,14 @@
     <% } else { %>
     <div class="element cdash" onclick="window.location.href='/userLogin'"><span class="span">&#8801;</span> Dashboard</div>
     <h1 style="margin: auto">Application</h1>
-    <button onclick="window.location.href='/userLogin'" id="back" class="logout">back</button>
+    <button onclick="window.location.href='/userLogin'" id="back" class="logout">Back</button>
     <button type="button" onclick="window.location.href='/userlogout'" class="logout">Logout</button>
      <% } %>
 </div>
 <div class="dash">
-    <% if (user_type != null) { %>
+    <% if (user_type != null && !user_type.equals("super_user")) {
+        System.out.println(user_type+ "<= this is the user type");
+    %>
     <div class="ele butt" style="grid-column: 2">
         <button onclick="window.location.href='/approve?id=<%= application_id %>'" class="buttoninbox">approve selected
         </button>
@@ -108,15 +110,20 @@
             <tr>
                 <% for (int i = 1; i <= hcols; i++) {
                     String colName = his.getMetaData().getColumnName(i);
+                    switch (colName) {
+                        case "application_id": colName = "Bill Id"; break;
+                        case "Processed_by": colName = "Processed By"; break;
+                        case "Date": colName = "Date"; break;
+                        case "verdict": colName = "Verdict"; break;
+                    }
                 %>
-                <th onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(<%=i%>)')"><%= colName %> &#8597;</th>
+                <th onclick="w3.sortHTML('#myTable', '.item', 'td:nth-child(<%=i%>)')"><%= colName %></th>
                 <% } %>
             </tr>
             </thead>
             <tbody>
             <% while (his.next()) { %>
-            <tr class="item"
-                onclick="window.location.href='view_application?id=<%= his.getString("application_id") %>'">
+            <tr>
 
                 <% for (int i = 1; i <= hcols; i++) {
                     String colValue = his.getString(i);

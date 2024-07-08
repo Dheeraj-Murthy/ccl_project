@@ -18,6 +18,7 @@
     <form
             action="${pageContext.request.contextPath}/add_application"
             method="post"
+<%--            onsubmit="disableEmptyInputs()"--%>
     >
         <h2 style="text-align: center; margin-bottom: 20px">Create Application</h2>
 
@@ -27,15 +28,17 @@
                     type="text"
                     name="employee_name"
                     id="employee_name"
+                    required
             />
         </div>
 
         <div class="to_right">
-            <label for="employee_id">Enter employee id:</label>
+            <label for="employee_id">Enter Employee id:</label>
             <input
                     type="text"
                     name="employee_id"
                     id="employee_id"
+                    required
             />
         </div>
 
@@ -45,12 +48,13 @@
                     type="text"
                     name="patient_name"
                     id="patient_name"
+                    required
             />
         </div>
 
         <div class="to_right">
             <label for="relation">
-                Select the relation of patient to the employee:
+                Select the relation of patient to the Employee:
             </label>
             <select
                     name="relation"
@@ -65,16 +69,17 @@
         </div>
 
         <div class="to_right">
-            <label for="patient_uhid">Enter the patient UHID:</label>
+            <label for="patient_uhid">Enter the patient CPRMS Id:</label>
             <input
                     type="text"
                     name="patient_uhid"
                     id="patient_uhid"
+                    required
             />
         </div>
 
         <div class="to_right">
-            <label for="disease_type">Select the disease_type of patient:</label>
+            <label for="disease_type">Select the disease type of patient:</label>
             <select
                     name="disease_type"
                     id="disease_type"
@@ -87,7 +92,7 @@
 
         <div class="to_right">
             <label for="treatment_type">
-                Select the treatment_type of patient:
+                Select the treatment type of patient:
             </label>
             <select
                     name="treatment_type"
@@ -100,13 +105,26 @@
         </div>
 
         <div class="to_right">
-            <label for="phone_number">Enter employee phone number:</label>
+            <label for="amount_claimed">Enter the amount to be claimed:</label>
+            <input
+                    type="number"
+                    minlength="10"
+                    maxlength="10"
+                    name="amount_claimed"
+                    id="amount_claimed"
+                    required
+            />
+        </div>
+
+        <div class="to_right">
+            <label for="phone_number">Enter Employee phone number:</label>
             <input
                     type="text"
                     minlength="10"
                     maxlength="10"
                     name="phone_number"
                     id="phone_number"
+                    required
             />
         </div>
 
@@ -121,6 +139,17 @@
 
         <button type="submit" style="height: 2rem">Add Application</button>
     </form>
+
+    <script>
+        function disableEmptyInputs(form) {
+            var controls = form.elements;
+            for (var i=0, iLen=controls.length; i<iLen; i++) {
+                if (controls[i] === '') {
+                    alert("Please make sure to fill all fields");
+                }
+            }
+        }
+    </script>
 </div>
 </body>
 </html>

@@ -250,6 +250,10 @@ thead {
     background-color: #eaeaea;
 }
 
+.no_hover:hover {
+    background-color: whitesmoke;
+}
+
 @media only screen and (max-width: 800px) {
     #tablebox {
         flex-direction: column;
