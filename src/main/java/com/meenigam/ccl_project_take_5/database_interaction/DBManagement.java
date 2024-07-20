@@ -41,6 +41,15 @@ public class DBManagement {
     static String table = "table_of_application";
     static String history = "history";
 
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            System.out.println(e.getMessage());
+            // Handle exception as needed
+        }
+    }
+
 
     private static void add_entry_into_application_table(String employee_name, String employee_id, String patient_name,
                                                          Relation_to_employee relation_to_employee, String patient_UHID, Disease_type disease_type,
@@ -342,6 +351,8 @@ public class DBManagement {
     }
 
     public static String[] retrieve_user(String email_or_username, String user_password) throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
         Connection connection = DriverManager.getConnection(url, userName, password);
         String useDB = "USE " + databaseName;
         connection.createStatement().executeUpdate(useDB);
@@ -546,6 +557,30 @@ public class DBManagement {
         ResultSet rs = connection.createStatement().executeQuery(query);
         String query2 = "SELECT COUNT(*) FROM table_of_application WHERE employee_id = '" + employee_id + "' AND employee_name = '" + employee_name + "';";
         ResultSet rs2 = connection.createStatement().executeQuery(query2);
+        Integer ans = null;
+        if (rs2.next()) {
+            ans = rs2.getInt(1);
+        }
+        return new Pair<>(rs, ans);
+    }
+    public static Pair<ResultSet, Integer> get_applications_otp(String phone_number) throws Exception {
+
+        forName("com.mysql.cj.jdbc.Driver");
+        Connection connection = DriverManager.getConnection(url, userName, password);
+        String useDB = "USE " + databaseName;
+
+        connection.createStatement().executeUpdate(useDB);
+        phone_number = phone_number.substring(3);
+
+
+        String query = "SELECT * FROM table_of_application WHERE phone_number = ?;";
+        PreparedStatement ps2 = connection.prepareStatement(query);
+        ps2.setString(1, phone_number);
+        ResultSet rs = ps2.executeQuery();
+        String query2 = "SELECT COUNT(*) FROM table_of_application WHERE phone_number = ?;";
+        PreparedStatement ps3 = connection.prepareStatement(query2);
+        ps3.setString(1, phone_number);
+        ResultSet rs2 = ps3.executeQuery();
         Integer ans = null;
         if (rs2.next()) {
             ans = rs2.getInt(1);

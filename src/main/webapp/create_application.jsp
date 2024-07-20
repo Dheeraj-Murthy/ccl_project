@@ -18,7 +18,6 @@
     <form
             action="${pageContext.request.contextPath}/add_application"
             method="post"
-<%--            onsubmit="disableEmptyInputs()"--%>
     >
         <h2 style="text-align: center; margin-bottom: 20px">Create Application</h2>
 

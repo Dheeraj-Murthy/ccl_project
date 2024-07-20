@@ -83,7 +83,7 @@
                     case "relation_to_employee": colName = "Relation to Employee"; break;
                     case "application_date": colName = "Registration Date"; break;
                     case "application_status": colName = "Application Status"; break;
-//                    case "patient_uhid": colName = "Bill Id"; break;
+                    case "bill_number": colName = "Bill Id"; break;
                     case "amount_claimed": colName = "Bill Amount"; break;
                     case "disease_type": colName = "Disease Type"; break;
                     case "treatment_type": colName = "Treatment Type"; break;

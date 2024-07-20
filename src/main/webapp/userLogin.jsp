@@ -23,9 +23,11 @@
         </div>
         <p style="align-self: center; text-align: center; color: red">${error}</p>
 
-        <div style="flex-direction: row; grid-template-columns: 1fr 1fr">
-            <button type="button" style="width: 30%; height: 2rem;" onclick="window.location.href='index.jsp'">Back</button>
-            <button type="submit" style="width: 30%; height: 2rem;">Find</button>
+        <div style="flex-direction: row; grid-template-columns: 1fr 1fr 1fr">
+            <button type="button" onclick="window.location.href='index.jsp'">Back</button>
+            <button type="button" onclick="window.location.href='sendOtp.jsp'">use phone number
+            </button>
+            <button type="submit">Find</button>
         </div>
     </form>
 </div>

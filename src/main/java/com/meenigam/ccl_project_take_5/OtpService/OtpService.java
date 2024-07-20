@@ -13,11 +13,16 @@ public class OtpService {
         // this will convert any number sequence into 6 character.
         return String.format("%06d", number);
     }
-    private static String sendOtp(String phoneNumber) {
+    public static String sendOtp(String phoneNumber) {
         String otp = getOtp();
         System.out.println("OTP: " + otp);
 //        sendSMS sms = new sendSMS();
         sendSMS.message(phoneNumber, otp);
         return otp;
+    }
+
+    public static void main(String[] args) {
+        String otp = sendOtp("+919431786037");
+        System.out.println(otp);
     }
 }
