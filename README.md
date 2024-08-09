@@ -1,5 +1,3 @@
-Thank you for the detailed information. Based on what you've provided, here's a structured approach to create your README file:
-
 ### README for CPRMS System by CCL
 
 #### Overview
@@ -21,10 +19,6 @@ The CPRMS (Claims Processing and Reimbursement Management System) is a web-based
 
 #### Installation
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo.git
-   cd your-repo
-   ```
 2. Set up MySQL database and configure `application.properties`.
 
 #### Usage
@@ -39,6 +33,8 @@ The CPRMS (Claims Processing and Reimbursement Management System) is a web-based
 
 #### Deployment
 - Deploy the application on a web server capable of running Java Servlets and MySQL.
+- You might also need a twillo account and its keys for the otp and sms api to work properly
+- you will also need mysql backend support for the project to store and manage the data
 
 #### Contributing
 - Contributions are welcome! Fork the repository, make your changes, and submit a pull request.
@@ -49,3 +45,4 @@ The CPRMS (Claims Processing and Reimbursement Management System) is a web-based
 
 #### Additional Information
 - For troubleshooting or additional information, contact dcompany2004@gmail.com
+- There a Project Report if your want detailed documentation for project. Please go throught it to get a better understanding of the project.
